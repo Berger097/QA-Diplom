@@ -35,8 +35,8 @@ public class SQL {
         String idPay = "SELECT payment_id FROM order_entity WHERE created=(SELECT MAX(created) FROM order_entity);";
         try (Connection connection = getConnection()) {
             paymentId = runner.query(connection, idPay, new ScalarHandler<>());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return paymentId;
     }
@@ -45,34 +45,50 @@ public class SQL {
         val runner = new QueryRunner();
         String amount = "";
         String amountQuery = "SELECT amount FROM payment_entity WHERE transaction_id =?;";
-        try (Connection connection = getConnection()) {
-            amount = runner.query(connection, amountQuery, paymentId, new ScalarHandler<>());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        try (Connection connection = getConnection();
+             PreparedStatement statusStatement = connection.prepareStatement(amountQuery)) {
+            statusStatement.setString(1, paymentId);
+            try (ResultSet resultSet = statusStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    amount = resultSet.getString("amount");
+                }
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return amount;
     }
 
     public static String getPaymentStatus(String paymentId) {
-        val runner = new QueryRunner();
         String status = "";
         String statusQuery = "SELECT status FROM payment_entity WHERE transaction_id =?;";
-        try (Connection connection = getConnection()) {
-            status = runner.query(connection, statusQuery, paymentId, new ScalarHandler<>());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        try (Connection connection = getConnection();
+             PreparedStatement statusStatement = connection.prepareStatement(statusQuery)) {
+            statusStatement.setString(1, paymentId);
+            try (ResultSet resultSet = statusStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    status = resultSet.getString("status");
+                }
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return status;
     }
 
     public static String getPaymentStatusForCreditRequest(String paymentId) {
-        val runner = new QueryRunner();
         String status = "";
         String statusQuery = "SELECT status FROM credit_request_entity WHERE bank_id =?;";
-        try (Connection connection = getConnection()) {
-            status = runner.query(connection, statusQuery, paymentId, new ScalarHandler<>());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        try (Connection connection = getConnection();
+             PreparedStatement statusStatement = connection.prepareStatement(statusQuery)) {
+            statusStatement.setString(1, paymentId);
+            try (ResultSet resultSet = statusStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    status = resultSet.getString("status");
+                }
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return status;
     }

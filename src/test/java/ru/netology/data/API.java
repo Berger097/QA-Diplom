@@ -23,9 +23,21 @@ public class API {
                 .spec(requestSpec)
                 .body(cardData)
                 .when()
-                .post("???")
+                .post("/api/v1/pay")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .extract().response().asString();
+    }
+
+    private static void CreditRequestPage (Data.CardData cardData) {
+        given()
+                .spec(requestSpec)
+                .body(cardData)
+                .when()
+                .post("/api/v1/credit")
+                .then()
+                .statusCode(200)
+                .extract().response().asString();
     }
 
 }
