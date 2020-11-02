@@ -11,7 +11,7 @@ public class MainPage {
 
     private static final SelenideElement payWithCardButton = $$("button").find(exactText("Купить"));
     private static final SelenideElement payWithCreditButton = $$("button").find(exactText("Купить в кредит"));
-    private static final SelenideElement formOfPayment = $("h3");
+    private static final SelenideElement formOfPayment = $("#root > div > h3");
 
     public void payWithCard() {
         payWithCardButton.click();
