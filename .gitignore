@@ -1,6 +1,6 @@
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 
@@ -33,3 +33,5 @@ build/
 Thumbs.db*
 .DS_Store*
 node_modules
+.gradle
+.allure
