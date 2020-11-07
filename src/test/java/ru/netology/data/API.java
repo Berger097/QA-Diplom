@@ -10,7 +10,7 @@ import static io.restassured.RestAssured.given;
 
 public class API {
 
-    private static RequestSpecification requestSpec = new RequestSpecBuilder()
+    public static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(8080)
             .setAccept(ContentType.JSON)
@@ -18,8 +18,8 @@ public class API {
             .log(LogDetail.ALL)
             .build();
 
-    private static void PaymentPage (Data.CardData cardData) {
-        given()
+    public static String PaymentPage (Data.CardData cardData) {
+        return given()
                 .spec(requestSpec)
                 .body(cardData)
                 .when()
@@ -29,8 +29,8 @@ public class API {
                 .extract().response().asString();
     }
 
-    private static void CreditRequestPage (Data.CardData cardData) {
-        given()
+    public static String CreditRequestPage (Data.CardData cardData) {
+        return given()
                 .spec(requestSpec)
                 .body(cardData)
                 .when()
