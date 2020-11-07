@@ -70,5 +70,4 @@ public class PayCvvFieldTest {
         paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
         paymentPage.improperFormatNotification();
     }
-
 }
