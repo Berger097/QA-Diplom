@@ -1,56 +1,31 @@
 package ru.netology.tests.creditrequest;
 
-import com.codeborne.selenide.logevents.SelenideLogger;
-import io.qameta.allure.selenide.AllureSelenide;
 import lombok.val;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.data.Data;
-import ru.netology.data.SQL;
 import ru.netology.pages.MainPage;
 import ru.netology.pages.PaymentPage;
+import ru.netology.tests.TestBase;
 
-import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.data.Data.*;
-import static ru.netology.data.Data.getValidCardNumberDeclined;
-import static ru.netology.data.SQL.*;
+import static ru.netology.data.Data.getApprovedCard;
+import static ru.netology.data.Data.getDeclinedCard;
+import static ru.netology.data.SQL.getPaymentId;
+import static ru.netology.data.SQL.getPaymentStatusForCreditRequest;
 
-public class CreditPayHappyPathTest {
+public class CreditPayHappyPathTest extends TestBase{
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
-    private final Data.NumberOfMonth numberOfMonth = getValidNumberOfMonth();
-    private final Data.Year year = getValidYear();
-    private final Data.Cardholder cardholder = getValidCardholderName();
-    private final Data.Cvv cvv = getValidCvv();
-
-    @BeforeAll
-    static void setUpAll() {
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
-    }
-
-    @AfterAll
-    static void tearDownAll() {
-        SelenideLogger.removeListener("allure");
-    }
-
-    @AfterAll
-    static void cleanDataBases() {
-        SQL.dropDataBase();
-    }
 
     @BeforeEach
-    void setUp() {
-        open("http://localhost:8080");
+    void setUpForPayWithCredit() {
         mainPage.payWithCredit();
     }
 
     @Test
     public void shouldSuccessCreditRequestIfValidApprovedCards() {
-        val cardNumber = getValidCardNumberApproved();
-        paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
+        val cardData = getApprovedCard();
+        paymentPage.fillCardData(cardData);
         paymentPage.successNotification();
         val paymentId = getPaymentId();
         val expectedStatus = "APPROVED";
@@ -60,13 +35,12 @@ public class CreditPayHappyPathTest {
 
     @Test
     public void shouldFailurePayIfValidDeclinedCards() {
-        val cardNumber = getValidCardNumberDeclined();
-        paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
+        val cardData = getDeclinedCard();
+        paymentPage.fillCardData(cardData);
         paymentPage.failureNotification();
         val paymentId = getPaymentId();
         val expectedStatus = "DECLINED";
         val actualStatus = getPaymentStatusForCreditRequest(paymentId);
         assertEquals(expectedStatus, actualStatus);
     }
-
 }
