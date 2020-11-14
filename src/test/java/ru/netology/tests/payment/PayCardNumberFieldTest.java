@@ -1,4 +1,4 @@
-package ru.netology.test.payment;
+package ru.netology.tests.payment;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -9,15 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.Data;
 import ru.netology.data.SQL;
-import ru.netology.page.MainPage;
-import ru.netology.page.PaymentPage;
+import ru.netology.pages.MainPage;
+import ru.netology.pages.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.data.Data.*;
-import static ru.netology.data.SQL.*;
 
-public class PayHappyPathTest {
+public class PayCardNumberFieldTest {
 
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
@@ -48,28 +46,23 @@ public class PayHappyPathTest {
     }
 
     @Test
-    public void shouldSuccessPayIfValidApprovedCards() {
-        val cardNumber = getValidCardNumberApproved();
+    public void shouldFailurePaymentIfEmptyCardNumber() {
+        val cardNumber = getInvalidCardNumberIfEmpty();
         paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
-        paymentPage.successNotification();
-        val paymentId = getPaymentId();
-        val expectedStatus = "APPROVED";
-        val actualStatus = getPaymentStatus(paymentId);
-        val expectedAmount = "4500000";
-        val actualAmount = getAmountPayment(paymentId);
-        assertEquals(expectedStatus, actualStatus);
-        assertEquals(expectedAmount, actualAmount);
+        paymentPage.emptyFieldNotification();
     }
 
     @Test
-    public void shouldFailurePayIfValidDeclinedCards() {
-        val cardNumber = getValidCardNumberDeclined();
+    public void shouldFailurePaymentIfCardNumberIfLess16Sym() {
+        val cardNumber = getInvalidCardNumberIfLess16Sym();
         paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
-        paymentPage.failureNotification();
-        val paymentId = getPaymentId();
-        val expectedStatus = "DECLINED";
-        val actualStatus = getPaymentStatus(paymentId);
-        assertEquals(expectedStatus, actualStatus);
+        paymentPage.improperFormatNotification();
     }
 
+    @Test
+    public void shouldFailurePaymentIfCardNumberIfOutOfBase() {
+        val cardNumber = getInvalidCardNumberIfOutOfBase();
+        paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
+        paymentPage.failureNotification();
+    }
 }

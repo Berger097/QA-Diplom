@@ -1,4 +1,4 @@
-package ru.netology.test.api;
+package ru.netology.tests.api;
 
 import lombok.val;
 import org.junit.jupiter.api.Test;

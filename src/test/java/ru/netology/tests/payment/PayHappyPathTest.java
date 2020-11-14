@@ -1,4 +1,4 @@
-package ru.netology.test.payment;
+package ru.netology.tests.payment;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -9,17 +9,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.Data;
 import ru.netology.data.SQL;
-import ru.netology.page.MainPage;
-import ru.netology.page.PaymentPage;
+import ru.netology.pages.MainPage;
+import ru.netology.pages.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.data.Data.*;
+import static ru.netology.data.SQL.*;
 
-public class PayNumberOfMonthFieldTest {
+public class PayHappyPathTest {
 
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
-    private final Data.CardNumber cardNumber = getValidCardNumberApproved();
+    private final Data.NumberOfMonth numberOfMonth = getValidNumberOfMonth();
     private final Data.Year year = getValidYear();
     private final Data.Cardholder cardholder = getValidCardholderName();
     private final Data.Cvv cvv = getValidCvv();
@@ -46,30 +48,28 @@ public class PayNumberOfMonthFieldTest {
     }
 
     @Test
-    public void shouldFailurePaymentIfEmptyNumberOfMonth() {
-        val numberOfMonth = getInvalidNumberOfMonthIfEmpty();
+    public void shouldSuccessPayIfValidApprovedCards() {
+        val cardNumber = getValidCardNumberApproved();
         paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
-        paymentPage.emptyFieldNotification();
+        paymentPage.successNotification();
+        val paymentId = getPaymentId();
+        val expectedStatus = "APPROVED";
+        val actualStatus = getPaymentStatus(paymentId);
+        val expectedAmount = "4500000";
+        val actualAmount = getAmountPayment(paymentId);
+        assertEquals(expectedStatus, actualStatus);
+        assertEquals(expectedAmount, actualAmount);
     }
 
     @Test
-    public void shouldFailurePaymentIfNumberOfMonthIfOneSym() {
-        val numberOfMonth = getInvalidNumberOfMonthIfOneSym();
+    public void shouldFailurePayIfValidDeclinedCards() {
+        val cardNumber = getValidCardNumberDeclined();
         paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
-        paymentPage.improperFormatNotification();
+        paymentPage.failureNotification();
+        val paymentId = getPaymentId();
+        val expectedStatus = "DECLINED";
+        val actualStatus = getPaymentStatus(paymentId);
+        assertEquals(expectedStatus, actualStatus);
     }
 
-    @Test
-    public void shouldFailurePaymentIfNumberOfMonthIfMore12() {
-        val numberOfMonth = getInvalidNumberOfMonthIfMore12();
-        paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
-        paymentPage.invalidExpiredDateNotification();
-    }
-
-    @Test
-    public void shouldFailurePaymentIfNumberOfMonthZero() {
-        val numberOfMonth = getInvalidNumberOfMonthIfZero();
-        paymentPage.fillCardData(cardNumber, numberOfMonth, year, cardholder, cvv);
-        paymentPage.invalidExpiredDateNotification();
-    }
 }

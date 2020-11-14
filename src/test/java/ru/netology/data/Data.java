@@ -142,11 +142,11 @@ public class Data {
 
     @Value
     public static class CardData {
-        String CardNumber;
-        String NumberOfMonth;
-        String Year;
-        String Cardholder;
-        String Cvv;
+        String number;
+        String month;
+        String year;
+        String holder;
+        String cvv;
     }
 
     public static CardData getApprovedCard() {

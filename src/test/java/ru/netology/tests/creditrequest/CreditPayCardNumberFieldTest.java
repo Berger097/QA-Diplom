@@ -1,4 +1,4 @@
-package ru.netology.test.payment;
+package ru.netology.tests.creditrequest;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -9,13 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.Data;
 import ru.netology.data.SQL;
-import ru.netology.page.MainPage;
-import ru.netology.page.PaymentPage;
+import ru.netology.pages.MainPage;
+import ru.netology.pages.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.data.Data.*;
 
-public class PayCardNumberFieldTest {
+public class CreditPayCardNumberFieldTest {
 
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
@@ -42,7 +42,7 @@ public class PayCardNumberFieldTest {
     @BeforeEach
     void setUp() {
         open("http://localhost:8080");
-        mainPage.payWithCard();
+        mainPage.payWithCredit();
     }
 
     @Test
