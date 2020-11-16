@@ -8,11 +8,12 @@ import ru.netology.pages.PaymentPage;
 import ru.netology.tests.TestBase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.netology.data.Data.getApprovedCard;
 import static ru.netology.data.Data.getDeclinedCard;
 import static ru.netology.data.SQL.*;
 
-public class PayHappyPathTest extends TestBase{
+public class PayHappyPathTest extends TestBase {
 
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
@@ -27,13 +28,20 @@ public class PayHappyPathTest extends TestBase{
         val cardData = getApprovedCard();
         paymentPage.fillCardData(cardData);
         paymentPage.successNotification();
-        val paymentId = getPaymentId();
+
         val expectedStatus = "APPROVED";
-        val actualStatus = getPaymentStatus(paymentId);
-        val expectedAmount = "4500000";
-        val actualAmount = getAmountPayment(paymentId);
+        val actualStatus = getCardStatusForPayment();
         assertEquals(expectedStatus, actualStatus);
+
+        val expectedAmount = "4500000";
+        val actualAmount = getAmountPayment();
         assertEquals(expectedAmount, actualAmount);
+
+        val transactionIdExpected = getTransactionId();
+        val paymentIdActual = getPaymentIdForCardPay();
+        assertNotNull(transactionIdExpected);
+        assertNotNull(paymentIdActual);
+        assertEquals(transactionIdExpected, paymentIdActual);
     }
 
     @Test
@@ -41,9 +49,15 @@ public class PayHappyPathTest extends TestBase{
         val cardData = getDeclinedCard();
         paymentPage.fillCardData(cardData);
         paymentPage.failureNotification();
-        val paymentId = getPaymentId();
+
         val expectedStatus = "DECLINED";
-        val actualStatus = getPaymentStatus(paymentId);
+        val actualStatus = getCardStatusForPayment();
         assertEquals(expectedStatus, actualStatus);
+
+        val transactionIdExpected = getTransactionId();
+        val paymentIdActual = getPaymentIdForCardPay();
+        assertNotNull(transactionIdExpected);
+        assertNotNull(paymentIdActual);
+        assertEquals(transactionIdExpected, paymentIdActual);
     }
 }

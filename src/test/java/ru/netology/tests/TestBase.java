@@ -23,12 +23,12 @@ public class TestBase {
     }
 
     @AfterEach
-    static void cleanDataBases() {
+    void cleanDataBases() {
         SQL.dropDataBase();
     }
 
     @BeforeEach
-    void setUp() {
+    void setUpSutUrl() {
         open(System.getProperty("sut.url"));
     }
 }

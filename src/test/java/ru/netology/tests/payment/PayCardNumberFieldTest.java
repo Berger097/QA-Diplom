@@ -9,7 +9,7 @@ import ru.netology.tests.TestBase;
 
 import static ru.netology.data.Data.*;
 
-public class PayCardNumberFieldTest extends TestBase{
+public class PayCardNumberFieldTest extends TestBase {
 
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();

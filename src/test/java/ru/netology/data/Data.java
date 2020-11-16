@@ -117,4 +117,12 @@ public class Data {
         return new CardData("4444 4444 4444 4441", "09", "24", "Popov Igor", "12");
     }
 
+    public static CardData getInvalidCvvIfThreeZero() {
+        return new CardData("4444 4444 4444 4441", "09", "24", "Popov Igor", "000");
+    }
+
+    public static CardData getInvalidCardDataIfEmptyAllFields() {
+        return new CardData("", "", "", "", "");
+    }
+
 }
