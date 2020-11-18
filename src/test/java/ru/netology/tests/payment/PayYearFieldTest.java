@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.pages.MainPage;
 import ru.netology.pages.PaymentPage;
-import ru.netology.tests.TestBase;
+import ru.netology.tests.TestBaseUI;
 
 import static ru.netology.data.Data.*;
 
-public class PayYearFieldTest extends TestBase {
+public class PayYearFieldTest extends TestBaseUI {
 
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
@@ -23,34 +23,34 @@ public class PayYearFieldTest extends TestBase {
     public void shouldFailurePaymentIfEmptyYear() {
         val cardData = getInvalidYearIfEmpty();
         paymentPage.fillCardData(cardData);
-        paymentPage.emptyFieldNotification();
+        paymentPage.shouldEmptyFieldNotification();
     }
 
     @Test
     public void shouldFailurePaymentIfYearOneSym() {
         val cardData = getInvalidYearIfOneSym();
         paymentPage.fillCardData(cardData);
-        paymentPage.improperFormatNotification();
+        paymentPage.shouldImproperFormatNotification();
     }
 
     @Test
     public void shouldFailurePaymentIfYearBeforeCurrentYear() {
         val cardData = getInvalidYearIfBeforeCurrentYear();
         paymentPage.fillCardData(cardData);
-        paymentPage.expiredDatePassNotification();
+        paymentPage.shouldExpiredDatePassNotification();
     }
 
     @Test
     public void shouldFailurePaymentIfYearZero() {
         val cardData = getInvalidYearIfZero();
         paymentPage.fillCardData(cardData);
-        paymentPage.invalidExpiredDateNotification();
+        paymentPage.shouldInvalidExpiredDateNotification();
     }
 
     @Test
     public void shouldFailurePaymentIfYearInTheFarFuture() {
         val cardData = getInvalidYearIfInTheFarFuture();
         paymentPage.fillCardData(cardData);
-        paymentPage.invalidExpiredDateNotification();
+        paymentPage.shouldInvalidExpiredDateNotification();
     }
 }

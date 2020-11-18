@@ -8,12 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.pages.MainPage;
 import ru.netology.pages.PaymentPage;
-import ru.netology.tests.TestBase;
+import ru.netology.tests.TestBaseUI;
 
 import static com.codeborne.selenide.Selenide.$$;
 import static ru.netology.data.Data.getInvalidCardDataIfEmptyAllFields;
 
-public class PayEmptyAllFieldsTest extends TestBase {
+public class PayEmptyAllFieldsTest extends TestBaseUI {
     MainPage mainPage = new MainPage();
     PaymentPage paymentPage = new PaymentPage();
 

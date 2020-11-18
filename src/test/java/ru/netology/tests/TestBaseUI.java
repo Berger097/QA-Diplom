@@ -10,7 +10,7 @@ import ru.netology.data.SQL;
 
 import static com.codeborne.selenide.Selenide.open;
 
-public class TestBase {
+public class TestBaseUI {
 
     @BeforeAll
     static void setUpAll() {
