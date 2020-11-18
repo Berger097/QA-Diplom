@@ -40,6 +40,31 @@ docker-compose up
 - `gradlew clean test -Ddb.url=jdbc:mysql://localhost:3306/app` - для MySQL
 - `gradlew clean test -Ddb.url=jdbc:postgresql://localhost:5432/app` - для PostgreSQL
 
+## Запуск отдельных тестовых классов
+Чтобы не запускать все тесты разом, предусмотрено два варианта запуска отдельных тестовых классов:
+### Вариант 1
+1. В `build.gradle` изменить адрес БД. Для этого нужно заменить строчку `systemProperty 'db.url', System.getProperty('db.url')` на:
+- `systemProperty 'db.url', System.getProperty('db.url', 'jdbc:mysql://localhost:3306/app')` - для MySQL
+- `systemProperty 'db.url', System.getProperty('db.url', 'jdbc:postgresql://localhost:5432/app')` - для PostgreSQL
+2. Запустить приложение (раздел "Запуск", в зависимости от БД)
+3. Запустить необходимый тестовый класс командой в терминале: `gradlew clean test --tests PayHappyPathTest` , где PayHappyPathTest - тестовый класс, подлежащий запуску
+
+### Вариант 2
+1. В `build.gradle` в раздел test добавить следующее:
+    ```
+    filter {
+        includeTestsMatching('*PayHappyPathTest')
+    }
+    ```
+где PayHappyPathTest - тестовый класс, подлежащий запуску
+
+2. Выполнить раздел "Запуск"
+
+3. Выполнить раздел "Запуск тестов"
+
+## Перезапуск приложения и тестов
+Если необходимо перезапустить приложение и/или тесты (например, для другой БД), необходимо выполнить остановку работы в запущенных ранее вкладках терминала, нажав в них Ctrl+С
+    
 ## Формирование отчета AllureReport по результатам тестирования
 В новой вкладке терминала или нажав двойной Ctrl ввести команду:
 ```
