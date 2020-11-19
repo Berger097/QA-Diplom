@@ -47,7 +47,7 @@ docker-compose up
 - `systemProperty 'db.url', System.getProperty('db.url', 'jdbc:mysql://localhost:3306/app')` - для MySQL
 - `systemProperty 'db.url', System.getProperty('db.url', 'jdbc:postgresql://localhost:5432/app')` - для PostgreSQL
 2. Запустить приложение (раздел "Запуск", в зависимости от БД)
-3. Запустить необходимый тестовый класс командой в терминале: `gradlew clean test --tests PayHappyPathTest` , где PayHappyPathTest - тестовый класс, подлежащий запуску
+3. Запустить необходимый тестовый класс командой в терминале: `gradlew clean test --tests PayHappyPathTest` , где PayHappyPathTest - тестовый класс, подлежащий запуску. Или запустить необходимый тестовый класс через IDE с помощью команды Run
 
 ### Вариант 2
 1. В `build.gradle` в раздел test добавить следующее:
