@@ -11,6 +11,8 @@
 ## Документация 
 
 [План автоматизации тестирования веб-формы сервиса покупки туров интернет-банка](https://github.com/daryamorozova/QA-Diploma/blob/master/documents/Plan.md)
+[Отчёт о проведённом тестировании](https://github.com/daryamorozova/QA-Diploma/blob/master/documents/Report.md)
+[Комплексный отчёт о проведённой автоматизации тестирования](https://github.com/daryamorozova/QA-Diploma/blob/master/documents/Summary.md)
 
 
 ## Запуск приложения
